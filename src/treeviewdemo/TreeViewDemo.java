@@ -6,10 +6,13 @@
 package treeviewdemo;
 
 import java.awt.event.MouseEvent;
+import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -25,49 +28,68 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javax.swing.event.TreeExpansionEvent;
-import javax.swing.event.TreeExpansionListener;
-import sun.plugin2.ipc.windows.WindowsEvent;
-
 /**
  *
  * @author 91959
  */
 public class TreeViewDemo extends Application  {
     Controller controller;
-    private void onClose(WindowEvent event) {
+   
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        
+        FXMLLoader loader=new FXMLLoader(getClass().getResource("ui.fxml"));
+         
+        GridPane grid = loader.load();
+        controller=loader.getController();
+        Scene scene=new Scene(grid,600,400);
+        primaryStage.setScene(scene);
+        primaryStage.setAlwaysOnTop(false);
+        primaryStage.setResizable(false);
+        primaryStage.setOnCloseRequest(this::onClose);
+        controller.setTasksMap(readTasksFile());
+        primaryStage.show();
+    
+    }
+    private HashMap<Integer,Task> readTasksFile(){
+            FileInputStream in=null;
+            HashMap<Integer,Task> tasksMap=new HashMap<>();
+            try{
+                in=new FileInputStream("tasks.xml");
+                XMLDecoder decoder=new XMLDecoder(in);
+                tasksMap=(HashMap<Integer, Task>) decoder.readObject();
+                decoder.close();
+            }catch(Exception e){
+                if(in!=null)
+                    try{
+                        in.close();
+                    }catch(IOException ex){
+                        ex.printStackTrace();
+                    }
+                e.printStackTrace();
+                
+            }finally{
+                return tasksMap;
+            }
+    }
+     private void onClose(WindowEvent event) {
     
         FileOutputStream out = null;
         try{
-            out=new FileOutputStream("myTasks.xml");
-            XMLEncoder encoder=new XMLEncoder(out);
+            out=new FileOutputStream("tasks.xml");
+            XMLEncoder encoder = new XMLEncoder(out);
             encoder.writeObject(controller.getTasksMap());
             encoder.close();
-        }catch(Exception e){
-            if(out!=null)
+        }catch(FileNotFoundException e){
+            if(out != null){
                 try{
                     out.close();
                 }catch(IOException ex){
                     ex.printStackTrace();
                 }
-                
+        }
             
         }
-    
-    
-    
-    }
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader= FXMLLoader.load(getClass().getResource("ui.fxml"));
-        GridPane grid=loader.load();
-        controller=loader.getController();
-        Scene scene=new Scene(grid,600,400);
-        primaryStage.setScene(scene);
-        primaryStage.setAlwaysOnTop(false);
-        primaryStage.setOnCloseRequest(this::onClose);
-        primaryStage.show();
-    
     }
    
     public static void main(String[]args){

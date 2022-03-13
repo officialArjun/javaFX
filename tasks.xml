@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_211" class="java.beans.XMLDecoder">
+ <object class="java.util.HashMap">
+  <void method="put">
+   <int>1</int>
+   <object class="treeviewdemo.Task">
+    <void property="description">
+     <string>task2</string>
+    </void>
+    <void property="id">
+     <int>1</int>
+    </void>
+    <void property="priority">
+     <string>High</string>
+    </void>
+    <void property="progress">
+     <int>3</int>
+    </void>
+   </object>
+  </void>
+  <void method="put">
+   <int>2</int>
+   <object class="treeviewdemo.Task">
+    <void property="description">
+     <string>treeviewdemo</string>
+    </void>
+    <void property="id">
+     <int>2</int>
+    </void>
+    <void property="priority">
+     <string>High</string>
+    </void>
+    <void property="progress">
+     <int>15</int>
+    </void>
+   </object>
+  </void>
+  <void method="put">
+   <int>3</int>
+   <object class="treeviewdemo.Task">
+    <void property="description">
+     <string>lksdjfklds</string>
+    </void>
+    <void property="id">
+     <int>3</int>
+    </void>
+    <void property="priority">
+     <string>Low</string>
+    </void>
+    <void property="progress">
+     <int>99</int>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>

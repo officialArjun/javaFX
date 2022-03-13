@@ -185,6 +185,13 @@ public class Controller implements  Initializable {
             
         }
     }
-
-
+    
+    void setTasksMap(HashMap<Integer,Task> initialTasksMap){
+        tasksMap.clear();
+        tasks.clear();
+        tasksMap.putAll(initialTasksMap);
+        tasks.addAll(initialTasksMap.values());
+        lastId=tasksMap.keySet().stream().max(Integer::compare).get();
+        
+    }
 }
